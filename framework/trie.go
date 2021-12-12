@@ -17,7 +17,7 @@ import (
 type node struct {
 	isLast bool // 该节点是否能成为一个独立的uri, 是否自身就是一个终极节点
 	segment string // uri中的字符串
-	handler ControllerHandler // 控制器
+	handlers []ControllerHandler // 中间件 + 控制器
 	childes []*node // 子节点
 }
 
@@ -53,7 +53,7 @@ func NewTree() *Tree {
 /:user/name/:age (冲突)
 */
 
-func (tree *Tree) AddRouter(uri string, handler ControllerHandler) error {
+func (tree *Tree) AddRouter(uri string, handlers []ControllerHandler) error {
 	n := tree.root
 
 	// 检测这个路由是否已经在路由树上
@@ -91,7 +91,7 @@ func (tree *Tree) AddRouter(uri string, handler ControllerHandler) error {
 			cNode.segment = segment
 			if isLast {
 				cNode.isLast = true
-				cNode.handler = handler
+				cNode.handlers = handlers
 			}
 			n.childes = append(n.childes, cNode)
 			objNode = cNode
@@ -126,7 +126,7 @@ func (n *node) matchNode(uri string) *node {
 
 	// 如果只有一个segment，则是最后一个标记
 	if len(segments) == 1 {
-		// 如果segment已经是最后一个节点，判断这些cnode是否有isLast标志
+		// 如果segment已经是最后一个节点，判断这些cNodes是否有isLast标志
 		for _, tn := range cNodes {
 			if tn.isLast {
 				return tn
@@ -180,11 +180,10 @@ func isWildSegment(segment string) bool {
 }
 
 // FindHandler 匹配uri
-func (tree *Tree) FindHandler(uri string) ControllerHandler {
+func (tree *Tree) FindHandler(uri string) []ControllerHandler {
 	matchNode := tree.root.matchNode(uri)
 	if matchNode == nil {
 		return nil
 	}
-	return matchNode.handler
+	return matchNode.handlers
 }
-

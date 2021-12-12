@@ -1,16 +1,20 @@
 package main
 
-import "gocore/framework"
+import (
+	"gocore/framework"
+	"gocore/framework/middleware"
+)
 
 func registerRoute(core *framework.Core)  {
 	// 静态路由+HTTP方法匹配
-	core.Get("/user/login", UserLoginController)
+	core.Get("/user/login", middleware.Test3(), UserLoginController)
 
 	// 批量通用前缀
 	subjectApi := core.Group("/subject")
+	subjectApi.Use(middleware.Test3())
 	subjectApi.Delete("/:id", SubjectDelController)
 	subjectApi.Put("/:id", SubjectUpdateController)
-	subjectApi.Get("/:id", SubjectGetController)
+	subjectApi.Get("/:id", middleware.Test3(), SubjectGetController)
 	subjectApi.Get("/list/all", SubjectListController)
 
 	subjectInnerApi := subjectApi.Group("/info")
