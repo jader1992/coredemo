@@ -67,14 +67,14 @@ func (c *Core) Group(prefix string) IGroup {
 }
 
 // FindRouteByRequest 匹配路由，如果没有匹配到，返回nil
-func (c *Core) FindRouteByRequest(request *http.Request) []ControllerHandler  {
+func (c *Core) FindRouteNodeByRequest(request *http.Request) *node  {
 	uri := request.URL.Path
 	method := request.Method
 	upperMethod := strings.ToUpper(method)
 
 	// 查找第一层map
 	if methodHandlers, ok := c.router[upperMethod]; ok {
-		return methodHandlers.FindHandler(uri)
+		return methodHandlers.root.matchNode(uri)
 	}
 	return nil
 }
@@ -84,16 +84,16 @@ func (c *Core) ServeHTTP(response http.ResponseWriter, request *http.Request)  {
 	ctx := NewContext(request, response)
 
 	// 查找路由
-	handlers := c.FindRouteByRequest(request)
-	if handlers == nil {
-		_ = ctx.Json(404, "not found")
+	node := c.FindRouteNodeByRequest(request)
+	if node == nil {
+		_ = ctx.SetStatus(404).Json("not found")
 		return
 	}
 
-	ctx.SetHandlers(handlers)
+	ctx.SetHandlers(node.handlers)
 
 	if err := ctx.Next(); err !=nil {
-		_ = ctx.Json(500, "inner error")
+		_ = ctx.SetStatus(500).Json("inner error")
 		return
 	}
 }

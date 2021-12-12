@@ -19,6 +19,7 @@ type node struct {
 	segment string // uri中的字符串
 	handlers []ControllerHandler // 中间件 + 控制器
 	childes []*node // 子节点
+	parent *node  // 父节点，双向指针
 }
 
 // Tree 代表树结构
@@ -32,6 +33,7 @@ func newCode() *node  {
 		isLast: false,
 		segment: "",
 		childes: []*node{},
+		parent: nil,
 	}
 }
 
@@ -93,6 +95,8 @@ func (tree *Tree) AddRouter(uri string, handlers []ControllerHandler) error {
 				cNode.isLast = true
 				cNode.handlers = handlers
 			}
+			// 父节点指针修改
+			cNode.parent = n
 			n.childes = append(n.childes, cNode)
 			objNode = cNode
 		}
@@ -179,11 +183,21 @@ func isWildSegment(segment string) bool {
 	return strings.HasPrefix(segment, ":")
 }
 
-// FindHandler 匹配uri
-func (tree *Tree) FindHandler(uri string) []ControllerHandler {
-	matchNode := tree.root.matchNode(uri)
-	if matchNode == nil {
-		return nil
+// 将uri解析为parms
+func (n *node) parseParamsFormEndNode(uri string) map[string]string {
+	ret := map[string]string{}
+	segments := strings.Split(uri, "/")
+	cnt := len(segments)
+	cur := n
+	for i := cnt -1; i > 0; i-- {
+		if cur.segment == "" {
+			break
+		}
+		// 如果是通配符节点
+		if isWildSegment(cur.segment) {
+			// 设置params
+			ret[cur.segment[1:]] = segments[i] // 查找出整个匹配链路中的通配符节点和对应 URI 中的分段
+		}
 	}
-	return matchNode.handlers
+	return ret
 }
