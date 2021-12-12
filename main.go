@@ -7,13 +7,20 @@ import (
 )
 
 func main() {
+	// 生成一个新的Handler
+	core := framework.NewCore()
+
+	// 注册路由
+	registerRoute(core)
+
+	// 生成server
 	server := &http.Server{
-		Handler: framework.NewCore(),
-		Addr: ":8080",
+		Handler: core,
+		Addr: ":8888",
 	}
 
 	err := server.ListenAndServe()
 	if err != nil {
-		log.Println("go frame 启动失败")
+		log.Println(err)
 	}
 }

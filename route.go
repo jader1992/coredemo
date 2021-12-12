@@ -1,6 +1,7 @@
 package main
 
-// routeHandler 路由文件
-func routeHandler()  {
+import "gocore/framework"
 
+func registerRoute(core *framework.Core)  {
+	core.Get("foo", FooControllerHandler)
 }
