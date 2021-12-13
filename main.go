@@ -1,9 +1,12 @@
+// Copyright 2021 jade1992.  All rights reserved.
+// Use of this source code is governed by a MIT style
+// license that can be found in the LICENSE file.
 package main
 
 import (
 	"context"
-	"gocore/framework"
-	"gocore/framework/middleware"
+	"github.com/jader1992/gocore/framework/gin"
+	"github.com/jader1992/gocore/framework/middleware"
 	"log"
 	"net/http"
 	"os"
@@ -14,10 +17,10 @@ import (
 
 func main() {
 	// 生成一个新的Handler
-	core := framework.NewCore()
+	core := gin.New()
 
 	// 注册中间件
-	core.Use(middleware.Recovery())
+	core.Use(gin.Recovery())
 	core.Use(middleware.Cost())
 
 	// 注册路由
