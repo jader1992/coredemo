@@ -7,6 +7,7 @@ import (
 	"context"
 	"github.com/jader1992/gocore/framework/gin"
 	"github.com/jader1992/gocore/framework/middleware"
+	"github.com/jader1992/gocore/provider/demo"
 	"log"
 	"net/http"
 	"os"
@@ -18,6 +19,8 @@ import (
 func main() {
 	// 生成一个新的Handler
 	core := gin.New()
+	// 绑定具体的服务
+	core.Bind(&demo.DemoServiceProvider{})
 
 	// 注册中间件
 	core.Use(gin.Recovery())

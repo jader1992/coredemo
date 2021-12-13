@@ -15,6 +15,7 @@ import (
 	"strings"
 	"sync"
 
+	"github.com/jader1992/gocore/framework"
 	"github.com/jader1992/gocore/framework/gin/internal/bytesconv"
 	"github.com/jader1992/gocore/framework/gin/render"
 )
@@ -68,6 +69,9 @@ const (
 // Engine is the framework's instance, it contains the muxer, middleware and configuration settings.
 // Create an instance of Engine, by using New() or Default()
 type Engine struct {
+	// 容器
+	container framework.Container
+
 	RouterGroup
 
 	// Enables automatic redirection if the current route can't be matched but a
@@ -167,6 +171,8 @@ func New() *Engine {
 			basePath: "/",
 			root:     true,
 		},
+		// 这里注入了contaner
+		container: framework.NewHadeContainer(),
 		FuncMap:                template.FuncMap{},
 		RedirectTrailingSlash:  true,
 		RedirectFixedPath:      false,
@@ -199,10 +205,11 @@ func Default() *Engine {
 	return engine
 }
 
+// engine创建context
 func (engine *Engine) allocateContext() *Context {
 	v := make(Params, 0, engine.maxParams)
 	skippedNodes := make([]skippedNode, 0, engine.maxSections)
-	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes}
+	return &Context{engine: engine, params: &v, skippedNodes: &skippedNodes, container: engine.container}
 }
 
 // Delims sets template left and right delims and returns a Engine instance.
