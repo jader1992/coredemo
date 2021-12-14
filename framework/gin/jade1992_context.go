@@ -2,27 +2,16 @@ package gin
 
 import (
 	"context"
-	"github.com/jader1992/gocore/framework"
 )
 
 func (ctx *Context) BaseContext() context.Context {
 	return ctx.Request.Context()
 }
 
-// Bind 实现了engine的绑定
-func (engine *Engine) Bind(provide framework.ServiceProvider) error {
-	return engine.container.Bind(provide) // 将provide与engine绑定
-}
-
-// IsBind 关键字凭证是否已经绑定服务提供者
-func (engine *Engine) IsBind(key string) bool {
-	return engine.container.IsBind(key)
-}
-
 // context 实现了container的几个封装
 
 // Make 实现了context的Make封装
-func (ctx *Context) Make(key string) (interface{}, error)  {
+func (ctx *Context) Make(key string) (interface{}, error) {
 	return ctx.container.Make(key)
 }
 

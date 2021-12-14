@@ -43,7 +43,7 @@ type IResponse interface {
 
 /********************response 状态相关*****************************/
 
-func (ctx *Context) ISetStatus(code int) IResponse  {
+func (ctx *Context) ISetStatus(code int) IResponse {
 	ctx.Writer.WriteHeader(code)
 	return ctx
 }
@@ -59,18 +59,18 @@ func (ctx *Context) ISetHeader(key string, val string) IResponse {
 }
 
 func (ctx *Context) ISetCookie(key string, val string, maxAge int, path string, domain string, secure bool,
-	httpOnly bool) IResponse{
+	httpOnly bool) IResponse {
 	if path == "" {
 		path = "/"
 	}
 	http.SetCookie(ctx.Writer, &http.Cookie{
-		Name: key,
-		Value: url.QueryEscape(val),
-		MaxAge: maxAge,
-		Path: path,
-		Domain: domain,
+		Name:     key,
+		Value:    url.QueryEscape(val),
+		MaxAge:   maxAge,
+		Path:     path,
+		Domain:   domain,
 		SameSite: 1,
-		Secure: secure,
+		Secure:   secure,
 		HttpOnly: httpOnly,
 	})
 

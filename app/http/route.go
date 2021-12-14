@@ -5,6 +5,7 @@ import (
 	"github.com/jader1992/gocore/framework/gin"
 )
 
+// Routes 绑定业务层路由
 func Routes(r *gin.Engine)  {
 
 	// 设置静态路径

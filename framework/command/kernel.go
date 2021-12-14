@@ -1,10 +1,12 @@
 package command
 
-//// AddKernelCommands will add all command/* to root command
-//func AddKernelCommands(root *cobra.Command) {
+import "github.com/jader1992/gocore/framework/cobra"
+
+// AddKernelCommands will add all command/* to root command
+func AddKernelCommands(root *cobra.Command) {
 //	root.SetHelpCommand(helpCommand)
 //
-//	root.AddCommand(envCommand)
+	root.AddCommand(DemoCommand)
 //	root.AddCommand(deployCommand)
 //
 //	// cron
@@ -22,7 +24,7 @@ package command
 //	root.AddCommand(buildCommand)
 //
 //	// app
-//	root.AddCommand(initAppCommand())
+	root.AddCommand(initAppCommand())
 //
 //	// dev
 //	root.AddCommand(initDevCommand())
@@ -45,4 +47,4 @@ package command
 //
 //	// new
 //	root.AddCommand(initNewCommand())
-//}
+}

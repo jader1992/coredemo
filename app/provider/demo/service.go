@@ -14,11 +14,11 @@ func (s *Service) GetAllStudent() []Student {
 	return []Student{
 		{
 			ID:   1,
-			Name: "foo",
+			Name: "foo1",
 		},
 		{
 			ID:   2,
-			Name: "bar",
+			Name: "bar2",
 		},
 	}
 }

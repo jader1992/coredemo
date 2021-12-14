@@ -2,7 +2,6 @@ package demo
 
 import (
 	demoService "github.com/jader1992/gocore/app/provider/demo"
-	"github.com/jader1992/gocore/framework/contract"
 	"github.com/jader1992/gocore/framework/gin"
 )
 
@@ -20,7 +19,7 @@ func Register(r *gin.Engine) error {
 
 // DemoApi 测试api的提供者
 type DemoApi struct {
-	service *Service  // 嵌套了与user方法的service
+	service *Service // 嵌套了与user方法的service
 }
 
 // NewDemoApi 初始化DemoApi
@@ -36,12 +35,12 @@ func NewDemoApi() *DemoApi {
 // @Tags demo
 // @Success 200 array []UserDTO
 // @Router /demo/demo [get]
-func (api *DemoApi) Demo(c *gin.Context)  {
-	// 获取app服务提供者
-	appService := c.MustMake(contract.APP_KEY).(contract.App)
-	// 获取项目基础目录
-	baseFolder := appService.BaseFolder()
-	c.JSON(200, baseFolder)
+func (api *DemoApi) Demo(c *gin.Context) {
+	//appService := c.MustMake(contract.APP_KEY).(contract.App) // 获取app服务提供者
+	//baseFolder := appService.BaseFolder() 	// 获取项目基础目录
+	users := api.service.GetUsers()
+	UsersDto := UserModelsToUserDTOs(users)
+	c.JSON(200, UsersDto)
 }
 
 // Demo godoc
@@ -51,16 +50,15 @@ func (api *DemoApi) Demo(c *gin.Context)  {
 // @Tags demo
 // @Success 200 array []UserDTO
 // @Router /demo/demo2 [get]
-func (api *DemoApi) Demo2(c *gin.Context)  {
+func (api *DemoApi) Demo2(c *gin.Context) {
 	// 获取demo服务的提供者
 	demoProvide := c.MustMake(demoService.DEMO_KEY).(demoService.IService)
-	//
 	students := demoProvide.GetAllStudent()
 	usersDto := StudentsToUsersDTOs(students)
 	c.JSON(200, usersDto)
 }
 
-func (api *DemoApi) DemoPost(c *gin.Context)  {
+func (api *DemoApi) DemoPost(c *gin.Context) {
 	type Foo struct {
 		Name string
 	}
@@ -71,4 +69,3 @@ func (api *DemoApi) DemoPost(c *gin.Context)  {
 	}
 	c.JSON(200, nil)
 }
-

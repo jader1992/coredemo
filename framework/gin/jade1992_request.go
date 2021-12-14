@@ -65,7 +65,7 @@ type IRequest interface {
 }
 
 // QueryAll 获取请求地址中所有参数
-func (ctx *Context) QueryAll() map[string][]string{
+func (ctx *Context) QueryAll() map[string][]string {
 	ctx.initQueryCache()
 	return map[string][]string{}
 }
@@ -86,7 +86,7 @@ func (ctx *Context) DefaultQueryInt(key string, def int) (int, bool) {
 	return def, false
 }
 
-func (ctx *Context) DefaultQueryInt64(key string, def int64) (int64, bool)  {
+func (ctx *Context) DefaultQueryInt64(key string, def int64) (int64, bool) {
 	params := ctx.QueryAll()
 	if vals, ok := params[key]; ok {
 		if len(vals) > 0 {
@@ -96,7 +96,7 @@ func (ctx *Context) DefaultQueryInt64(key string, def int64) (int64, bool)  {
 	return def, false
 }
 
-func (ctx *Context) DefaultQueryFloat64(key string, def float64) (float64, bool)  {
+func (ctx *Context) DefaultQueryFloat64(key string, def float64) (float64, bool) {
 	params := ctx.QueryAll()
 	if vals, ok := params[key]; ok {
 		if len(vals) > 0 {
@@ -106,7 +106,7 @@ func (ctx *Context) DefaultQueryFloat64(key string, def float64) (float64, bool)
 	return def, false
 }
 
-func (ctx *Context) DefaultQueryFloat32(key string, def float32) (float32, bool)  {
+func (ctx *Context) DefaultQueryFloat32(key string, def float32) (float32, bool) {
 	params := ctx.QueryAll()
 	if vals, ok := params[key]; ok {
 		if len(vals) > 0 {
@@ -116,7 +116,7 @@ func (ctx *Context) DefaultQueryFloat32(key string, def float32) (float32, bool)
 	return def, false
 }
 
-func (ctx *Context) DefaultQueryBool(key string, def bool) (bool, bool)  {
+func (ctx *Context) DefaultQueryBool(key string, def bool) (bool, bool) {
 	params := ctx.QueryAll()
 	if vals, ok := params[key]; ok {
 		if len(vals) > 0 {
@@ -202,7 +202,7 @@ func (ctx *Context) DefaultParamString(key string, def string) (string, bool) {
 
 /********************body start*****************************/
 
-func (ctx *Context) FormAll() map[string] []string {
+func (ctx *Context) FormAll() map[string][]string {
 	ctx.initFormCache()
 	return map[string][]string(ctx.formCache)
 }
@@ -257,7 +257,7 @@ func (ctx *Context) DefaultFormBool(key string, def bool) (bool, bool) {
 	return def, false
 }
 
-func (ctx *Context) DefaultFormString(key string, def string) (string, bool)  {
+func (ctx *Context) DefaultFormString(key string, def string) (string, bool) {
 	parms := ctx.FormAll()
 	if vals, ok := parms[key]; ok {
 		if len(vals) > 0 {
