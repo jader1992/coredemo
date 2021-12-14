@@ -5,29 +5,34 @@ package main
 
 import (
 	"context"
+	coreHttp "github.com/jader1992/gocore/app/http"
+	"github.com/jader1992/gocore/app/provider/demo"
 	"github.com/jader1992/gocore/framework/gin"
 	"github.com/jader1992/gocore/framework/middleware"
-	"github.com/jader1992/gocore/provider/demo"
+	"github.com/jader1992/gocore/framework/provider/app"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
 	"syscall"
 	"time"
+
 )
 
 func main() {
 	// 生成一个新的Handler
 	core := gin.New()
-	// 绑定具体的服务
-	core.Bind(&demo.DemoServiceProvider{})
+
+	// 绑定具体的服务提供者
+	core.Bind(&demo.DemoProvider{}) // 绑定DemoProvide
+	core.Bind(&app.GocoreAppProvider{}) // 绑定GocoreAppProvider
 
 	// 注册中间件
 	core.Use(gin.Recovery())
 	core.Use(middleware.Cost())
 
 	// 注册路由
-	registerRoute(core)
+	coreHttp.Routes(core)
 
 	// 生成server
 	server := &http.Server{

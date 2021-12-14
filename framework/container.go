@@ -27,7 +27,7 @@ type Container interface {
 	MakeNew(key string, params []interface{}) (interface{}, error)
 }
 
-// HadeContainer 是服务容器的具体实现
+// HadeContainer 是服务容器的具体实现，这里的方法会在core.Bind时绑定
 type HadeContainer struct {
 	Container
 

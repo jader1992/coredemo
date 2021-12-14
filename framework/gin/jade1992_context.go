@@ -11,7 +11,7 @@ func (ctx *Context) BaseContext() context.Context {
 
 // Bind 实现了engine的绑定
 func (engine *Engine) Bind(provide framework.ServiceProvider) error {
-	return engine.container.Bind(provide)
+	return engine.container.Bind(provide) // 将provide与engine绑定
 }
 
 // IsBind 关键字凭证是否已经绑定服务提供者
