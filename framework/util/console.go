@@ -2,7 +2,7 @@ package util
 
 import "fmt"
 
-// 美观输出数组
+// PrettyPrint 美观输出数组
 func PrettyPrint(arr [][]string) {
 	if len(arr) == 0 {
 		return

@@ -9,6 +9,7 @@ import (
 	"github.com/jader1992/gocore/app/provider/demo"
 	"github.com/jader1992/gocore/framework"
 	"github.com/jader1992/gocore/framework/provider/app"
+	"github.com/jader1992/gocore/framework/provider/distributed"
 	"github.com/jader1992/gocore/framework/provider/kernel"
 )
 
@@ -20,6 +21,7 @@ func main() {
 	container.Bind(&app.GocoreAppProvider{})
 	container.Bind(&demo.DemoProvider{})
 	// 后续初始化需要绑定的服务提供者...
+	container.Bind(&distributed.LocalDistributedProvider{}) // 分布式定时任务
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(); err == nil {

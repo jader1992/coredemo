@@ -61,11 +61,11 @@ func (hade *HadeContainer) PrintProvides() []string {
 // Bind 将服务容器和关键字做了绑定
 func (hade *HadeContainer) Bind(provide ServiceProvider) error {
 	hade.lock.Lock()
-	defer hade.lock.Unlock()
 
 	key := provide.Name()
-
 	hade.providers[key] = provide
+
+	hade.lock.Unlock()
 
 	// if providers is not defer
 	if provide.IsDefer() == false {
@@ -105,7 +105,7 @@ func (hade *HadeContainer) Make(key string) (interface{}, error) {
 func (hade *HadeContainer) MustMake(key string) interface{} {
 	serv, err := hade.make(key, nil, false)
 	if err != nil {
-		panic(err)
+		panic("container not contain key " + key)
 	}
 	return serv
 }
