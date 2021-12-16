@@ -1,0 +1,16 @@
+url: http://127.0.0.1:8066
+
+swagger_open: true
+
+dev_fresh: 1
+
+path:
+  storage: "/gocore_sts/testdata/storage/"
+  log_folder: "/Users/jade/Desktop/go/gocore/storage/log/"
+  runtime_folder: "Users/jade/Desktop/go/gocore/storage/runtime/"
+  log: ""
+  pid: ""
+  cache: ""
+
+
+

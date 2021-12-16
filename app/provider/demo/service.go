@@ -28,5 +28,3 @@ func NewService(params ...interface{}) (interface{}, error) {
 	container := params[0].(framework.Container)
 	return &Service{container: container}, nil
 }
-
-

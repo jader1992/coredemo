@@ -1,7 +1,9 @@
 package demo
 
 import (
+	"fmt"
 	"github.com/jader1992/gocore/framework/cobra"
+	"github.com/jader1992/gocore/framework/contract"
 	"log"
 )
 
@@ -18,9 +20,12 @@ var FooCommand = &cobra.Command{
 	Aliases: []string{"fo", "f"},
 	Example: "foo命令的例子",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		//container := cmd.GetContainer()
-		//log.Println(container)
-		log.Println("execute foo command")
+		configService := cmd.GetContainer().MustMake(contract.CONFIG_KEY).(contract.Config)
+		envService := cmd.GetContainer().MustMake(contract.ENV_KEY).(contract.Env)
+		fmt.Println("APP_ENV: ", envService.Get("APP_ENV"))
+		fmt.Println("FOO_ENV: ", envService.Get("FOO_ENV"))
+
+		fmt.Println("config url:", configService.GetString("app.url"))
 		return nil
 	},
 }

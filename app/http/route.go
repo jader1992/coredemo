@@ -6,7 +6,7 @@ import (
 )
 
 // Routes 绑定业务层路由
-func Routes(r *gin.Engine)  {
+func Routes(r *gin.Engine) {
 
 	// 设置静态路径
 	r.Static("/dist/", "./dist/")

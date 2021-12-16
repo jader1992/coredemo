@@ -2,6 +2,7 @@ package demo
 
 import (
 	demoService "github.com/jader1992/gocore/app/provider/demo"
+	"github.com/jader1992/gocore/framework/contract"
 	"github.com/jader1992/gocore/framework/gin"
 )
 
@@ -38,9 +39,14 @@ func NewDemoApi() *DemoApi {
 func (api *DemoApi) Demo(c *gin.Context) {
 	//appService := c.MustMake(contract.APP_KEY).(contract.App) // 获取app服务提供者
 	//baseFolder := appService.BaseFolder() 	// 获取项目基础目录
-	users := api.service.GetUsers()
-	UsersDto := UserModelsToUserDTOs(users)
-	c.JSON(200, UsersDto)
+	//users := api.service.GetUsers()
+	//UsersDto := UserModelsToUserDTOs(users)
+	//c.JSON(200, UsersDto)
+
+	// 测试config
+	configService := c.MustMake(contract.CONFIG_KEY).(contract.Config)
+	password := configService.GetString("database.mysql.password")
+	c.JSON(200, password)
 }
 
 // Demo godoc

@@ -8,7 +8,7 @@ import (
 type DemoProvider struct {
 	framework.ServiceProvider
 
-	c framework.Container  // 服务容器
+	c framework.Container // 服务容器
 }
 
 // Name方法直接将服务对应的字符串凭证返回，在这个例子中就是“jade.demo"
