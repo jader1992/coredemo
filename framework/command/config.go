@@ -7,8 +7,8 @@ import (
 	"github.com/kr/pretty"
 )
 
-// initConfigCommand 获取配置相关的命令
-func initConfigCommand() *cobra.Command {
+// InitConfigCommand 获取配置相关的命令
+func InitConfigCommand() *cobra.Command {
 	configCommand.AddCommand(configGetCommand)
 	return configCommand
 }
