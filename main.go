@@ -15,6 +15,7 @@ import (
 	"github.com/jader1992/gocore/framework/provider/id"
 	"github.com/jader1992/gocore/framework/provider/kernel"
 	"github.com/jader1992/gocore/framework/provider/log"
+	"github.com/jader1992/gocore/framework/provider/trace"
 )
 
 func main() {
@@ -30,6 +31,7 @@ func main() {
 	container.Bind(&config.GocoreConfigProvider{})          // config相关
 	container.Bind(&log.GocoreLogServiceProvider{})         // 日志文件相关
 	container.Bind(&id.GocoreIDProvider{})                  // id生成器
+	container.Bind(&trace.GocoreTraceProvider{})            // 链路追踪
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(); err == nil {

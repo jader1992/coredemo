@@ -10,7 +10,7 @@ func NewGocoreIDService(params ...interface{}) (interface{}, error) {
 	return &GocoreIDService{}, nil
 }
 
-func (s *GocoreIDService) NewId() string {
+func (s *GocoreIDService) NewID() string {
 	return xid.New().String()
 }
 

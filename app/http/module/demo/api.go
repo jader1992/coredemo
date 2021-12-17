@@ -49,9 +49,16 @@ func (api *DemoApi) Demo(c *gin.Context) {
 
 	// 测试日志
 	logger := c.MustMakeLog()
+
+	// 获取链路追踪信息
+	traceService := c.MustMake(contract.TraceKey).(contract.Trace)
+	traceContext := traceService.GetTrace(c)
+	traceContextMap := traceService.ToMap(traceContext)
+
 	logger.Trace(c, "demo test error", map[string]interface{}{
-		"api": "demo/demo",
-		"user": "jade",
+		"api":   "demo/demo",
+		"user":  "jade",
+		"trace": traceContextMap,
 	})
 
 	c.JSON(200, password)
