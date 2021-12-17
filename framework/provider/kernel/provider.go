@@ -36,5 +36,5 @@ func (sp *GocoreKernelProvider) Params(c framework.Container) []interface{}  {
 
 // Name 提供凭证
 func (sp *GocoreKernelProvider) Name() string {
-	return contract.KERNEL_KEY
+	return contract.KernelKey
 }

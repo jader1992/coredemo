@@ -1,15 +1,15 @@
 package contract
 
 const (
-	// ENV_PRODUCTION 代表生产环境
-	ENV_PRODUCTION = "production"
+	// EnvProduction 代表生产环境
+	EnvProduction = "production"
 	// ENV_TESTING 代表测试环境
-	ENV_TESTING = "testing"
-	// ENV_DEVELOPMENT 代表开发环境
-	ENV_DEVELOPMENT = "development"
+	EnvTesting = "testing"
+	// EnvDevelopment 代表开发环境
+	EnvDevelopment = "development"
 
-	// ENV_KEY 是环境变量服务字符串凭证
-	ENV_KEY = "gocore:env"
+	// EnvKey 是环境变量服务字符串凭证
+	EnvKey = "gocore:env"
 )
 
 // Env 定义环境变量的获取服务

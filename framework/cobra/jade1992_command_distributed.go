@@ -29,8 +29,8 @@ func (c *Command) AddDistributedCronCommand(serviceName string, spec string, cmd
 		ServiceName: serviceName,
 	})
 
-	appService := root.GetContainer().MustMake(contract.APP_KEY).(contract.App)
-	distributeService := root.GetContainer().MustMake(contract.DISTRIBUTED_KEY).(contract.Distributed)
+	appService := root.GetContainer().MustMake(contract.AppKey).(contract.App)
+	distributeService := root.GetContainer().MustMake(contract.DistributedKey).(contract.Distributed)
 	appId := appService.AppId()
 
 	// 复制要执行的command为cronCmd，并且设置为rootCmd

@@ -131,9 +131,9 @@ func (conf *GocoreConfig) loadConfigFile(folder string, file string) error {
 		conf.confRaws[name] = bf
 
 		// 读取app.path中的信息，更新app对应的folder
-		if name == "app" && conf.c.IsBind(contract.APP_KEY) {
+		if name == "app" && conf.c.IsBind(contract.AppKey) {
 			if p, ok := c["path"]; ok {
-				appService := conf.c.MustMake(contract.APP_KEY).(contract.App)
+				appService := conf.c.MustMake(contract.AppKey).(contract.App)
 				appService.LoadAppConfig(cast.ToStringMapString(p))
 			}
 		}

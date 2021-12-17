@@ -37,15 +37,23 @@ func NewDemoApi() *DemoApi {
 // @Success 200 array []UserDTO
 // @Router /demo/demo [get]
 func (api *DemoApi) Demo(c *gin.Context) {
-	//appService := c.MustMake(contract.APP_KEY).(contract.App) // 获取app服务提供者
+	//appService := c.MustMake(contract.AppKey).(contract.App) // 获取app服务提供者
 	//baseFolder := appService.BaseFolder() 	// 获取项目基础目录
 	//users := api.service.GetUsers()
 	//UsersDto := UserModelsToUserDTOs(users)
 	//c.JSON(200, UsersDto)
 
 	// 测试config
-	configService := c.MustMake(contract.CONFIG_KEY).(contract.Config)
+	configService := c.MustMake(contract.ConfigKey).(contract.Config)
 	password := configService.GetString("database.mysql.password")
+
+	// 测试日志
+	logger := c.MustMakeLog()
+	logger.Trace(c, "demo test error", map[string]interface{}{
+		"api": "demo/demo",
+		"user": "jade",
+	})
+
 	c.JSON(200, password)
 }
 

@@ -2,7 +2,7 @@ package contract
 
 import "time"
 
-const DISTRIBUTED_KEY = "gocore:distributed"
+const DistributedKey = "gocore:distributed"
 
 type Distributed interface {
 	// Select 分布式选择器, 所有节点对某个服务进行抢占，只选择其中一个节点

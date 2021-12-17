@@ -19,7 +19,7 @@ func TestGocoreConfig_Normal(t *testing.T) {
 		err := c.Bind(&GocoreConfigProvider{})
 		So(err, ShouldBeNil)
 
-		conf := c.MustMake(contract.CONFIG_KEY).(contract.Config)
+		conf := c.MustMake(contract.ConfigKey).(contract.Config)
 		So(conf.GetString("database.mysql.hostname"), ShouldEqual, "127.0.0.1")
 		So(conf.GetInt("database.mysql.timeout"), ShouldEqual, 1)
 		So(conf.GetFloat64("database.mysql.readtime"), ShouldEqual, 2.3)

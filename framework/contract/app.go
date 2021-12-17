@@ -1,6 +1,6 @@
 package contract
 
-const APP_KEY = "gocore:app"
+const AppKey = "gocore:app"
 
 // App 定义接口
 type App interface {

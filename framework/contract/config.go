@@ -3,7 +3,7 @@ package contract
 import "time"
 
 const (
-	CONFIG_KEY = "gocore:config"
+	ConfigKey = "gocore:config"
 )
 
 // Config 定义了配置文件服务，读取配置文件，支持点分割的路径读取

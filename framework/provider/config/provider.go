@@ -21,8 +21,8 @@ func (provider *GocoreConfigProvider) IsDefer() bool {
 }
 
 func (provider *GocoreConfigProvider) Params(c framework.Container) []interface{} {
-	appService := c.MustMake(contract.APP_KEY).(contract.App)
-	envService := c.MustMake(contract.ENV_KEY).(contract.Env)
+	appService := c.MustMake(contract.AppKey).(contract.App)
+	envService := c.MustMake(contract.EnvKey).(contract.Env)
 	env := envService.AppEnv()
 	// 配置文件夹地址
 	configFolder := appService.ConfigFolder()
@@ -31,5 +31,5 @@ func (provider *GocoreConfigProvider) Params(c framework.Container) []interface{
 }
 
 func (provider *GocoreConfigProvider) Name() string {
-	return contract.CONFIG_KEY
+	return contract.ConfigKey
 }

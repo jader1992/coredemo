@@ -13,6 +13,7 @@ import (
 	"github.com/jader1992/gocore/framework/provider/distributed"
 	"github.com/jader1992/gocore/framework/provider/env"
 	"github.com/jader1992/gocore/framework/provider/kernel"
+	"github.com/jader1992/gocore/framework/provider/log"
 )
 
 func main() {
@@ -26,6 +27,7 @@ func main() {
 	container.Bind(&distributed.LocalDistributedProvider{}) // 分布式定时任务
 	container.Bind(&env.GocoreEnvProvider{})                // ENV相关
 	container.Bind(&config.GocoreConfigProvider{})          // config相关
+	container.Bind(&log.GocoreLogServiceProvider{})         // 日志文件相关
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(); err == nil {

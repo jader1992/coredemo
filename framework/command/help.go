@@ -12,7 +12,7 @@ var DemoCommand = &cobra.Command{
 	Short: "demo for framework",
 	Run: func(cmd *cobra.Command, args []string) {
 		container := cmd.GetContainer()
-		appService := container.MustMake(contract.APP_KEY).(contract.App)
+		appService := container.MustMake(contract.AppKey).(contract.App)
 		fmt.Println("app base folder:", appService.BaseFolder())
 	},
 }

@@ -12,7 +12,7 @@ func TestGocoreConfig_GetInt(t *testing.T) {
 	Convey("test hade env normal case", t, func() {
 		basePath := tests.BASE_PATH
 		folder := filepath.Join(basePath, "config")
-		serv, err := NewGocoreConfig(folder, map[string]string{}, contract.CONFIG_KEY)
+		serv, err := NewGocoreConfig(folder, map[string]string{}, contract.ConfigKey)
 		So(err, ShouldBeNil)
 		conf := serv.(*GocoreConfig)
 		timeout := conf.GetInt("database.mysql.timeout")

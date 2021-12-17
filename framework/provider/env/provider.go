@@ -14,7 +14,7 @@ func (provider *GocoreEnvProvider) Register(c framework.Container) framework.New
 }
 
 func (provider *GocoreEnvProvider) Boot(c framework.Container) error {
-	app := c.MustMake(contract.APP_KEY).(contract.App)
+	app := c.MustMake(contract.AppKey).(contract.App)
 	provider.Folder = app.BaseFolder()
 	return nil
 }
@@ -28,5 +28,5 @@ func (provider *GocoreEnvProvider) Params(c framework.Container) []interface{} {
 }
 
 func (provider *GocoreEnvProvider) Name() string {
-	return contract.ENV_KEY
+	return contract.EnvKey
 }

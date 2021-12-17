@@ -59,7 +59,7 @@ var cronStartCommand = &cobra.Command{
 	Short: "启动cron常驻进程",
 	RunE: func(c *cobra.Command, args []string) error {
 		container := c.GetContainer()
-		appService := container.MustMake(contract.APP_KEY).(contract.App)
+		appService := container.MustMake(contract.AppKey).(contract.App)
 
 		pidFolder := appService.RuntimeFolder()
 		serverPidFile := filepath.Join(pidFolder, "cron.pid")
@@ -123,7 +123,7 @@ var cronRestartCommand = &cobra.Command{
 	Short: "重启cron常驻进程",
 	RunE: func(c *cobra.Command, args []string) error {
 		container := c.GetContainer()
-		appService := container.MustMake(contract.APP_KEY).(contract.App)
+		appService := container.MustMake(contract.AppKey).(contract.App)
 
 		// GetPid
 		serverPidFile := filepath.Join(appService.RuntimeFolder(), "cron.pid")
@@ -168,7 +168,7 @@ var cronStopCommand = &cobra.Command{
 	Short: "停止cron常驻进程",
 	RunE: func(c *cobra.Command, args []string) error {
 		container := c.GetContainer()
-		appService := container.MustMake(contract.APP_KEY).(contract.App)
+		appService := container.MustMake(contract.AppKey).(contract.App)
 
 		// 获取进程pid
 		serverPidFile := filepath.Join(appService.RuntimeFolder(), "cron.pid")
@@ -204,7 +204,7 @@ var cronStateCommand = &cobra.Command{
 	RunE: func(c *cobra.Command, args []string) error {
 		container := c.GetContainer()
 
-		appService := container.MustMake(contract.APP_KEY).(contract.App)
+		appService := container.MustMake(contract.AppKey).(contract.App)
 		serverPidFile := filepath.Join(appService.RuntimeFolder(), "cron.pid")
 
 		content, err := ioutil.ReadFile(serverPidFile)

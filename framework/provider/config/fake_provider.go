@@ -32,5 +32,5 @@ func (provider *FakeConfigProvider) Params(c framework.Container) []interface{} 
 
 // Name define the name for this service
 func (provider *FakeConfigProvider) Name() string {
-	return contract.CONFIG_KEY
+	return contract.ConfigKey
 }

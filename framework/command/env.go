@@ -19,7 +19,7 @@ var envCommand = &cobra.Command{
 	Short: "获取当前的App环境",
 	Run: func(c *cobra.Command, args []string) {
 		container := c.GetContainer()
-		envService := container.MustMake(contract.ENV_KEY).(contract.Env)
+		envService := container.MustMake(contract.EnvKey).(contract.Env)
 		// 打印环境
 		fmt.Println("environment:", envService.AppEnv())
 	},
@@ -32,7 +32,7 @@ var envListCommmand = &cobra.Command{
 	Run: func(c *cobra.Command, args []string) {
 		// 获取env环境
 		container := c.GetContainer()
-		envService := container.MustMake(contract.ENV_KEY).(contract.Env)
+		envService := container.MustMake(contract.EnvKey).(contract.Env)
 		envs := envService.All()
 		outs := [][]string{}
 		for k, v := range envs {

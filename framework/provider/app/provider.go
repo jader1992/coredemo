@@ -27,7 +27,7 @@ func (p *GocoreAppProvider) Params(container framework.Container) []interface{} 
 }
 
 func (p *GocoreAppProvider) Name() string {
-	return contract.APP_KEY
+	return contract.AppKey
 }
 
 

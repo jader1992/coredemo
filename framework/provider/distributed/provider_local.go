@@ -31,5 +31,5 @@ func (sp *LocalDistributedProvider) Params(container framework.Container) []inte
 
 // Name 获取字符串凭证
 func (sp *LocalDistributedProvider) Name() string {
-	return contract.DISTRIBUTED_KEY
+	return contract.DistributedKey
 }

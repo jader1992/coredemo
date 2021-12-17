@@ -26,7 +26,7 @@ func NewLocalDistrubutedService(params ...interface{}) (interface{}, error) {
 
 // Select 为分布式选择器
 func (s LocalDistributedService) Select(serviceName string, appId string, holdTime time.Duration) (selectAppId string, err error) {
-	appService := s.container.MustMake(contract.APP_KEY).(contract.App)
+	appService := s.container.MustMake(contract.AppKey).(contract.App)
 	runtimeFold := appService.RuntimeFolder()
 	lockFile := filepath.Join(runtimeFold, "distribute_"+serviceName)
 
