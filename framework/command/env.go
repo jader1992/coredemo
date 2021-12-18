@@ -8,7 +8,7 @@ import (
 )
 
 // initEnvCommand 获取env相关的命令
-func InitEnvCommand() *cobra.Command {
+func initEnvCommand() *cobra.Command {
 	envCommand.AddCommand(envListCommmand)
 	return envCommand
 }

@@ -14,8 +14,8 @@ import (
 // 同时编译前后端我们同时调用 npm build 和 go build 就行
 // 自编译：./gocore build self
 
-// InitBuildCommand 初始化命令
-func InitBuildCommand() *cobra.Command {
+// initBuildCommand 初始化命令
+func initBuildCommand() *cobra.Command {
 	buildCommand.AddCommand(buildSelfCommand)     // 自编译
 	buildCommand.AddCommand(buildBackendCommand)  // 编译后端
 	buildCommand.AddCommand(buildFrontendCommand) // 编译前端

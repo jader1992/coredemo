@@ -61,7 +61,7 @@ func (api *DemoApi) Demo(c *gin.Context) {
 		"trace": traceContextMap,
 	})
 
-	c.JSON(200, password)
+	c.JSON(200, password + "ceshi")
 }
 
 // Demo godoc

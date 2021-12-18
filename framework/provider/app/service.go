@@ -115,6 +115,13 @@ func (app GocoreApp) LoadAppConfig(kv map[string]string)  {
 	}
 }
 
+func (app *GocoreApp) AppFolder() string {
+  if val, ok := app.configMap["app_folder"]; ok {
+    return val
+  }
+  return filepath.Join(app.BaseFolder(), "app") // 默认监控./app
+}
+
 func NewGocoreApp(params ...interface{}) (interface{}, error) {
 	if len(params) != 2 {
 		return nil, errors.New("param error")
