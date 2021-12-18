@@ -2,7 +2,8 @@ package console
 
 import (
 	"github.com/jader1992/gocore/app/console/command/demo"
-	"github.com/jader1992/gocore/framework"
+    "github.com/jader1992/gocore/app/console/command/foo"
+    "github.com/jader1992/gocore/framework"
 	"github.com/jader1992/gocore/framework/cobra"
 	"github.com/jader1992/gocore/framework/command"
 	"time"
@@ -38,7 +39,9 @@ func RunCommand(container framework.Container) error {
 
 func AddAppCommand(rootCommand *cobra.Command) {
 	// demo 例子
-	rootCommand.AddCommand(demo.InitFoo())
+	//rootCommand.AddCommand(demo.InitFoo())
+
+    rootCommand.AddCommand(foo.FooCommand)
 
 	// 定时任务
 	// rootCommand.AddCronCommand("* * * * * *", demo.InitFoo())
