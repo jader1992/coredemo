@@ -166,11 +166,6 @@ func NewGocoreConfig(params ...interface{}) (interface{}, error) {
 	// 过程如下： 先检查配置文件夹是否存在，然后读取文件夹中的每个以 yaml 或者 yml 后缀的文件；读取之后，先用 replace 对环境变量进行一次
 	// 替换；替换之后使用 go-yaml，对文件进行解析。
 
-	// 检查文件夹是否存在
-	if _, err := os.Stat(envFolder); os.IsNotExist(err) {
-		return nil, errors.New("folder " + envFolder + " not exist: " + err.Error())
-	}
-
 	// 示例化
 	gocoreConf := &GocoreConfig{
 		c:        container,
@@ -181,6 +176,11 @@ func NewGocoreConfig(params ...interface{}) (interface{}, error) {
 		keyDelim: ".",
 		lock:     sync.RWMutex{},
 	}
+
+    // 检查文件夹是否存在
+    if _, err := os.Stat(envFolder); os.IsNotExist(err) {
+        return gocoreConf, nil
+    }
 
 	//  读取每个文件
 	files, err := ioutil.ReadDir(envFolder)

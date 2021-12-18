@@ -71,7 +71,7 @@ func (app GocoreApp) ConsoleFolder() string {
 	if val, ok := app.configMap["console_folder"]; ok {
 		return val
 	}
-	return filepath.Join(app.BaseFolder(), "console")
+	return filepath.Join(app.BaseFolder(), "app", "console")
 }
 
 func (app GocoreApp) CommandFolder() string {
@@ -100,7 +100,7 @@ func (app GocoreApp) ProviderFolder() string {
 	if val, ok := app.configMap["provider_folder"]; ok {
 		return val
 	}
-	return filepath.Join(app.BaseFolder(), "provider")
+	return filepath.Join(app.BaseFolder(), "app", "provider")
 }
 
 // AppID 表示这个App的唯一ID

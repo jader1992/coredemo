@@ -27,8 +27,8 @@ type Container interface {
 	MakeNew(key string, params []interface{}) (interface{}, error)
 }
 
-// HadeContainer 是服务容器的具体实现，这里的方法会在core.Bind时绑定
-type HadeContainer struct {
+// GocoreContainer 是服务容器的具体实现，这里的方法会在core.Bind时绑定
+type GocoreContainer struct {
 	Container
 
 	providers map[string]ServiceProvider // 存储注册的服务提供者，key为字符串凭证
@@ -38,8 +38,8 @@ type HadeContainer struct {
 }
 
 // NewHadeContainer 创建一个服务容器
-func NewHadeContainer() *HadeContainer {
-	return &HadeContainer{
+func NewHadeContainer() *GocoreContainer {
+	return &GocoreContainer{
 		providers: map[string]ServiceProvider{},
 		instances: map[string]interface{}{},
 		lock: sync.RWMutex{},
@@ -47,9 +47,9 @@ func NewHadeContainer() *HadeContainer {
 }
 
 // PrintProviders 输出服务容器中注册的关键字
-func (hade *HadeContainer) PrintProvides() []string {
+func (gocore *GocoreContainer) PrintProvides() []string {
 	ret := []string{}
-	for _, provide := range hade.providers {
+	for _, provide := range gocore.providers {
 		name := provide.Name()
 
 		line := fmt.Sprintf(name)
@@ -59,74 +59,74 @@ func (hade *HadeContainer) PrintProvides() []string {
 }
 
 // Bind 将服务容器和关键字做了绑定
-func (hade *HadeContainer) Bind(provide ServiceProvider) error {
-	hade.lock.Lock()
+func (gocore *GocoreContainer) Bind(provide ServiceProvider) error {
+    gocore.lock.Lock()
 
 	key := provide.Name()
-	hade.providers[key] = provide
+    gocore.providers[key] = provide
 
-	hade.lock.Unlock()
+    gocore.lock.Unlock()
 
 	// if providers is not defer
 	if provide.IsDefer() == false {
-		if err := provide.Boot(hade); err != nil {
+		if err := provide.Boot(gocore); err != nil {
 			return err // 一些准备工作会报错
 		}
 
 		// 实例化方法
-		params := provide.Params(hade)
-		method := provide.Register(hade)
+		params := provide.Params(gocore)
+		method := provide.Register(gocore)
 		instance, err := method(params...)
 		if err != nil {
 			fmt.Println("bind service provider ", key, " error: ", err)
 		}
-		hade.instances[key] = instance
+        gocore.instances[key] = instance
 	}
 	return nil
 }
 
-func (hade *HadeContainer) IsBind(key string) bool {
-	return hade.findServiceProvider(key) != nil
+func (gocore *GocoreContainer) IsBind(key string) bool {
+	return gocore.findServiceProvider(key) != nil
 }
 
-func (hade *HadeContainer) findServiceProvider(key string) ServiceProvider {
-	hade.lock.RLock()
-	defer hade.lock.RUnlock()
-	if sp, ok := hade.providers[key]; ok {
+func (gocore *GocoreContainer) findServiceProvider(key string) ServiceProvider {
+    gocore.lock.RLock()
+	defer gocore.lock.RUnlock()
+	if sp, ok := gocore.providers[key]; ok {
 		return sp
 	}
 	return nil
 }
 
-func (hade *HadeContainer) Make(key string) (interface{}, error) {
-	return hade.make(key, nil, false)
+func (gocore *GocoreContainer) Make(key string) (interface{}, error) {
+	return gocore.make(key, nil, false)
 }
 
-func (hade *HadeContainer) MustMake(key string) interface{} {
-	serv, err := hade.make(key, nil, false)
+func (gocore *GocoreContainer) MustMake(key string) interface{} {
+	serv, err := gocore.make(key, nil, false)
 	if err != nil {
 		panic("container not contain key " + key)
 	}
 	return serv
 }
 
-func (hade *HadeContainer) MakeNew(key string, params []interface{}) (interface{}, error)  {
-	return hade.make(key, params, true)
+func (gocore *GocoreContainer) MakeNew(key string, params []interface{}) (interface{}, error)  {
+	return gocore.make(key, params, true)
 }
 
 // 初始化实例
-func (hade *HadeContainer) newInstance(sp ServiceProvider, params []interface{}) (interface{}, error) {
-	err := sp.Boot(hade);
+func (gocore *GocoreContainer) newInstance(sp ServiceProvider, params []interface{}) (interface{}, error) {
+	err := sp.Boot(gocore);
 	if err != nil {
 		return nil, err
 	}
 
 	if params == nil {
 		// 获取默认参数
-		params = sp.Params(hade)
+		params = sp.Params(gocore)
 	}
 
-	method := sp.Register(hade)
+	method := sp.Register(gocore)
 	ins, err := method(params...)
 	if err != nil {
 		return nil, errors.New(err.Error())
@@ -135,32 +135,41 @@ func (hade *HadeContainer) newInstance(sp ServiceProvider, params []interface{})
 }
 
 // 真正实例化一个服务
-func (hade *HadeContainer) make(key string, params []interface{}, forceNew bool) (interface{}, error)  {
-	hade.lock.RLock()
-	defer hade.lock.RUnlock()
+func (gocore *GocoreContainer) make(key string, params []interface{}, forceNew bool) (interface{}, error)  {
+    gocore.lock.RLock()
+	defer gocore.lock.RUnlock()
 
-	sp := hade.findServiceProvider(key)
+	sp := gocore.findServiceProvider(key)
 	if sp == nil {
 		return nil, errors.New("contract " + key + " have not register")
 	}
 
 	// 强制初始化
 	if forceNew {
-		return hade.newInstance(sp, params)
+		return gocore.newInstance(sp, params)
 	}
 
 	// 不需要强制初始化，如果容器中已经实例化了，那么就直接使用容器中的实例
-	if ins, ok := hade.instances[key]; ok {
+	if ins, ok := gocore.instances[key]; ok {
 		return ins, nil
 	}
 
 	// 容器中还未实例化，则进行第一次实例化【单例的使用】
-	inst, err := hade.newInstance(sp, nil)
+	inst, err := gocore.newInstance(sp, nil)
 	if err != nil {
 		return nil, err
 	}
 
 	// 保存实例
-	hade.instances[key] = inst
+    gocore.instances[key] = inst
 	return inst, nil
+}
+
+func (gocore *GocoreContainer) NameList() []string {
+    ret := []string{}
+    for _, provider := range gocore.providers {
+        name := provider.Name()
+        ret = append(ret, name)
+    }
+    return ret
 }
