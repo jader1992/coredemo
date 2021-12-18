@@ -26,6 +26,7 @@ type devConfig struct {
 		RefreshTime   int    // 调试模式后端更新时间，如果文件变更，等待3s才进行一次更新，能让频繁保存变更更为顺畅, 默认1s
 		Port          string //  后端监听端口， 默认 8072
 		MonitorFolder string // 监听文件夹，默认为AppFolder
+        cmd string // 执行的命令
 	}
 	Frontend struct {
 		Port string // 前端启动端口，默认8071
@@ -41,10 +42,12 @@ func initDevConfig(c framework.Container) *devConfig {
 			RefreshTime   int
 			Port          string
 			MonitorFolder string
+            cmd string
 		}{
 			1,
 			"8072",
 			"",
+            "",
 		},
 		Frontend: struct{ Port string }{
 			"8071",
@@ -65,6 +68,10 @@ func initDevConfig(c framework.Container) *devConfig {
 	if configer.IsExist("app.dev.backend.port") {
 		devConfig.Backend.Port = configer.GetString("app.dev.backend.port")
 	}
+
+    if configer.IsExist("app.dev.backend.cmd") {
+        devConfig.Backend.cmd = configer.GetString("app.dev.backend.cmd")
+    }
 
 	// monitorFolder 默认使用目录服务的AppFolder()
 	monitorFolder := configer.GetString("app.dev.backend.monitor_folder")
@@ -136,7 +143,7 @@ func (p *Proxy) newProxyReverseProxy(frontend, backend *url.URL) *httputil.Rever
 
 // rebuildBackend 重新编译后端
 func (p *Proxy) rebuildBackend() error {
-	cmdBuild := exec.Command("./gocore", "build", "backend")
+	cmdBuild := exec.Command(p.devConfig.Backend.cmd, "build", "backend")
 	cmdBuild.Stdout = os.Stdout
 	cmdBuild.Stderr = os.Stderr
 
@@ -165,7 +172,7 @@ func (p *Proxy) restartBackend() error {
 
 	// 使用命令行启动后段进程
     fmt.Println(address)
-	cmd := exec.Command("./gocore", "app", "start", "--address=" + address)
+	cmd := exec.Command(p.devConfig.Backend.cmd, "app", "start", "--address=" + address)
 	cmd.Stdout = os.Stdout
 	cmd.Stdout = os.Stderr
 	fmt.Println("启动后端服务： ", "http://127.0.0.1:"+port)
