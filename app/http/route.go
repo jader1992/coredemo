@@ -1,7 +1,8 @@
 package http
 
 import (
-	"github.com/jader1992/gocore/app/http/module/demo"
+    "github.com/jader1992/gocore/app/http/middleware/cors"
+    "github.com/jader1992/gocore/app/http/module/demo"
 	"github.com/jader1992/gocore/framework/gin"
 	"github.com/jader1992/gocore/framework/middleware"
   "github.com/jader1992/gocore/framework/middleware/static"
@@ -16,5 +17,7 @@ func Routes(r *gin.Engine) {
 
 	// 使用链路追踪中间件
 	r.Use(middleware.Trace())
+    // 使用cors中间件
+    r.Use(cors.Default())
 	demo.Register(r) // 注册路由
 }

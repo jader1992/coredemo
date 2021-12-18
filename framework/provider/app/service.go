@@ -64,7 +64,7 @@ func (app GocoreApp) HttpFolder() string {
 	if val, ok := app.configMap["http_folder"]; ok {
 		return val
 	}
-	return filepath.Join(app.BaseFolder(), "http")
+	return filepath.Join(app.BaseFolder(), "app", "http")
 }
 
 func (app GocoreApp) ConsoleFolder() string {
@@ -85,7 +85,7 @@ func (app GocoreApp) MiddlewareFolder() string {
 	if val, ok := app.configMap["middleware_folder"]; ok {
 		return val
 	}
-	return filepath.Join(app.BaseFolder(), "middleware")
+	return filepath.Join(app.HttpFolder(), "middleware")
 }
 
 func (app GocoreApp) TestFolder() string {
