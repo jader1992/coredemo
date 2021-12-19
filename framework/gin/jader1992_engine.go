@@ -2,8 +2,14 @@ package gin
 
 import "github.com/jader1992/gocore/framework"
 
+// SetContainer 为Engine设置container
 func (engine *Engine) SetContainer(container framework.Container) {
 	engine.container = container
+}
+
+// GetContainer 从Engine中获取container
+func (engine *Engine) GetContainer() framework.Container {
+    return engine.container
 }
 
 // Bind engine实现container的绑定封装

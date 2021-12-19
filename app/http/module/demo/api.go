@@ -29,12 +29,14 @@ func NewDemoApi() *Api {
 	return &Api{service: service}
 }
 
+var user string
+
 // Demo godoc
 // @Summary 获取所有用户
 // @Description 获取所有用户
 // @Produce  json
 // @Tags demo
-// @Success 200 array []UserDTO
+// @Success 200 string user
 // @Router /demo/demo [get]
 func (api *Api) Demo(c *gin.Context) {
 	//appService := c.MustMake(contract.AppKey).(contract.App) // 获取app服务提供者
@@ -69,7 +71,7 @@ func (api *Api) Demo(c *gin.Context) {
 // @Description 获取所有学生
 // @Produce  json
 // @Tags demo
-// @Success 200 array []UserDTO
+// @Success 200 array []UserDto
 // @Router /demo/demo2 [get]
 func (api *Api) Demo2(c *gin.Context) {
 	// 获取demo服务的提供者
