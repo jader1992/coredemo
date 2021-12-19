@@ -26,7 +26,7 @@ type devConfig struct {
 		RefreshTime   int    // 调试模式后端更新时间，如果文件变更，等待3s才进行一次更新，能让频繁保存变更更为顺畅, 默认1s
 		Port          string //  后端监听端口， 默认 8072
 		MonitorFolder string // 监听文件夹，默认为AppFolder
-        cmd string // 执行的命令
+		cmd           string // 执行的命令
 	}
 	Frontend struct {
 		Port string // 前端启动端口，默认8071
@@ -42,12 +42,12 @@ func initDevConfig(c framework.Container) *devConfig {
 			RefreshTime   int
 			Port          string
 			MonitorFolder string
-            cmd string
+			cmd           string
 		}{
 			1,
 			"8072",
 			"",
-            "",
+			"",
 		},
 		Frontend: struct{ Port string }{
 			"8071",
@@ -55,33 +55,33 @@ func initDevConfig(c framework.Container) *devConfig {
 	}
 
 	// 容器中获取配置服务
-	configer := c.MustMake(contract.ConfigKey).(contract.Config)
+	config := c.MustMake(contract.ConfigKey).(contract.Config)
 
 	// 每个配置项进行检查
-	if configer.IsExist("app.dev.port") {
-		devConfig.Port = configer.GetString("app.dev.port")
+	if config.IsExist("app.dev.port") {
+		devConfig.Port = config.GetString("app.dev.port")
 	}
 
-	if configer.IsExist("app.dev.backend.refresh_time") {
-		devConfig.Backend.RefreshTime = configer.GetInt("app.dev.backend.refresh_time")
+	if config.IsExist("app.dev.backend.refresh_time") {
+		devConfig.Backend.RefreshTime = config.GetInt("app.dev.backend.refresh_time")
 	}
-	if configer.IsExist("app.dev.backend.port") {
-		devConfig.Backend.Port = configer.GetString("app.dev.backend.port")
+	if config.IsExist("app.dev.backend.port") {
+		devConfig.Backend.Port = config.GetString("app.dev.backend.port")
 	}
 
-    if configer.IsExist("app.dev.backend.cmd") {
-        devConfig.Backend.cmd = configer.GetString("app.dev.backend.cmd")
-    }
+	if config.IsExist("app.dev.backend.cmd") {
+		devConfig.Backend.cmd = config.GetString("app.dev.backend.cmd")
+	}
 
 	// monitorFolder 默认使用目录服务的AppFolder()
-	monitorFolder := configer.GetString("app.dev.backend.monitor_folder")
+	monitorFolder := config.GetString("app.dev.backend.monitor_folder")
 	if monitorFolder == "" {
 		appService := c.MustMake(contract.AppKey).(contract.App)
 		devConfig.Backend.MonitorFolder = appService.AppFolder()
 	}
 
-	if configer.IsExist("app.dev.frontend.port") {
-		devConfig.Frontend.Port = configer.GetString("app.dev.frontend.port")
+	if config.IsExist("app.dev.frontend.port") {
+		devConfig.Frontend.Port = config.GetString("app.dev.frontend.port")
 	}
 
 	return devConfig
@@ -124,7 +124,7 @@ func (p *Proxy) newProxyReverseProxy(frontend, backend *url.URL) *httputil.Rever
 	// 定义一个NotFoundErr
 	NotFoundErr := errors.New("response is 404, need to redirect")
 
-    // 思路：先请求后端路由，如果后端路由不存在，再请求前端理由
+	// 思路：先请求后端路由，如果后端路由不存在，再请求前端理由
 	return &httputil.ReverseProxy{
 		Director: director,
 		ModifyResponse: func(response *http.Response) error {
@@ -162,7 +162,7 @@ func (p *Proxy) rebuildBackend() error {
 func (p *Proxy) restartBackend() error {
 	// 杀死之前的进程
 	if p.backendPid != 0 {
-		syscall.Kill(p.backendPid, syscall.SIGKILL) // 杀死之前的进程
+		_ = syscall.Kill(p.backendPid, syscall.SIGKILL) // 杀死之前的进程
 		p.backendPid = 0
 	}
 
@@ -171,8 +171,8 @@ func (p *Proxy) restartBackend() error {
 	address := fmt.Sprintf(":" + port)
 
 	// 使用命令行启动后段进程
-    fmt.Println(address)
-	cmd := exec.Command(p.devConfig.Backend.cmd, "app", "start", "--address=" + address)
+	fmt.Println(address)
+	cmd := exec.Command(p.devConfig.Backend.cmd, "app", "start", "--address="+address)
 	cmd.Stdout = os.Stdout
 	cmd.Stdout = os.Stderr
 	fmt.Println("启动后端服务： ", "http://127.0.0.1:"+port)
@@ -191,7 +191,7 @@ func (p *Proxy) restartFrontend() error {
 	// 启动前端调试模式
 	// 如果已经开启了npm run serve, 杀死进程
 	if p.frontendPid != 0 {
-		syscall.Kill(p.frontendPid, syscall.SIGKILL)
+		_ = syscall.Kill(p.frontendPid, syscall.SIGKILL)
 		p.frontendPid = 0
 	}
 
@@ -255,7 +255,7 @@ func (p *Proxy) startProxy(startFrontend, startBackend bool) error {
 		Handler: proxyReverse,
 	}
 
-	fmt.Println("代理服务启动：", "http://"+proxyServer.Addr)
+	fmt.Println("代理服务启动：", "https://"+proxyServer.Addr)
 
 	// 启动服务
 	err = proxyServer.ListenAndServe()
@@ -272,14 +272,16 @@ func (p *Proxy) monitorBackend() error {
 	if err != nil {
 		return err
 	}
-	defer watcher.Close()
+	defer func(watcher *fsnotify.Watcher) {
+		_ = watcher.Close()
+	}(watcher)
 
 	// 开启监听目标文件夹
 	appFolder := p.devConfig.Backend.MonitorFolder
 	fmt.Println("监控文件夹：", appFolder)
 
 	// 监听所有子目录，需要使用filepath.walk
-	filepath.Walk(appFolder, func(path string, info fs.FileInfo, err error) error {
+	_ = filepath.Walk(appFolder, func(path string, info fs.FileInfo, err error) error {
 		if info != nil && !info.IsDir() {
 			return nil
 		}
@@ -302,7 +304,7 @@ func (p *Proxy) monitorBackend() error {
 		select {
 		case <-t.C:
 			// 计时器时间到了，代表之前有文件更新事件重置过计时器
-			// 即有文件更新
+			// 既有文件更新
 			fmt.Println("...检测到文件更新，重新启动服务...")
 			if err := p.rebuildBackend(); err != nil {
 				fmt.Println("重新编译失败: ", err.Error())
@@ -331,7 +333,7 @@ func (p *Proxy) monitorBackend() error {
 	}
 }
 
-// 初始化一个网关
+// NewProxy 初始化一个网关
 func NewProxy(c framework.Container) *Proxy {
 	devConfig := initDevConfig(c)
 	return &Proxy{devConfig: devConfig}
@@ -349,7 +351,7 @@ var devCommand = &cobra.Command{
 	Use:   "dev",
 	Short: "调式模式",
 	RunE: func(c *cobra.Command, args []string) error {
-		c.Help()
+		_ = c.Help()
 		return nil
 	},
 }
@@ -359,7 +361,9 @@ var devBackendCommand = &cobra.Command{
 	Short: "启动后端调试模式",
 	RunE: func(c *cobra.Command, args []string) error {
 		proxy := NewProxy(c.GetContainer())
-		go proxy.monitorBackend()
+		go func() {
+			_ = proxy.monitorBackend()
+		}()
 		if err := proxy.startProxy(false, true); err != nil {
 			return err
 		}
@@ -381,7 +385,9 @@ var devAllCommand = &cobra.Command{
 	Short: "同时启动前端和后端调试",
 	RunE: func(c *cobra.Command, args []string) error {
 		proxy := NewProxy(c.GetContainer())
-		go proxy.monitorBackend()
+		go func() {
+			_ = proxy.monitorBackend()
+		}()
 		if err := proxy.startProxy(true, true); err != nil {
 			return err
 		}

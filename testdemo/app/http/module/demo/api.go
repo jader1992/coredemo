@@ -8,7 +8,7 @@ import (
 
 func Register(r *gin.Engine) error {
 	// 绑定demoPrivider提供者
-	// r.Bind(&demoService.DemoProvider{})
+	// r.Bind(&demoService.TestProvider{})
 
 	// 注册路由
 	api := NewDemoApi()

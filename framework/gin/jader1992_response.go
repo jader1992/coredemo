@@ -10,35 +10,25 @@ import (
 )
 
 type IResponse interface {
-	// json 输出
 	IJson(obj interface{}) IResponse // 返回 IResponse，这样能允许使用方进行链式调用
 
-	// Jsonp输出
-	IJsonp(obj interface{}) IResponse
+	IJsonp(obj interface{}) IResponse // jsonp输出
 
-	// xml输出
-	IXml(obj interface{}) IResponse
+	IXml(obj interface{}) IResponse // xml输出
 
-	// html输出
-	IHtml(template string, obj interface{}) IResponse
+	IHtml(template string, obj interface{}) IResponse // html输出
 
-	// string输出
-	IText(format string, values ...interface{}) IResponse
+	IText(format string, values ...interface{}) IResponse // string输出
 
-	// 重定向
-	IRedirect(path string) IResponse
+	IRedirect(path string) IResponse // 重定向
 
-	// header
-	ISetHeader(key string, val string) IResponse
+	ISetHeader(key string, val string) IResponse // header
 
-	// cookie
-	ISetCookie(key string, val string, maxAge int, path, domain string, secure, httponly bool) IResponse
+	ISetCookie(key string, val string, maxAge int, path, domain string, secure, httponly bool) IResponse // cookie
 
-	// 设置状态码
-	ISetStatus(code int) IResponse
+	ISetStatus(code int) IResponse // 设置状态码
 
-	// 设置200状态
-	ISetOkStatus() IResponse
+	ISetOkStatus() IResponse // 设置200
 }
 
 /********************response 状态相关*****************************/

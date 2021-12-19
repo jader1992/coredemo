@@ -24,7 +24,7 @@ func main() {
 
 	// 绑定App服务提供者
 	container.Bind(&app.GocoreAppProvider{})
-	container.Bind(&demo.DemoProvider{})
+	container.Bind(&demo.TestProvider{})
 	// 后续初始化需要绑定的服务提供者...
 	container.Bind(&distributed.LocalDistributedProvider{}) // 分布式定时任务
 	container.Bind(&env.GocoreEnvProvider{})                // ENV相关

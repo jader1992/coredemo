@@ -23,12 +23,12 @@ func (c *Command) GetContainer() framework.Container {
 	return c.Root().container
 }
 
-// set parent
+// SetParentNull set parent
 func (c *Command) SetParentNull() {
 	c.parent = nil
 }
 
-func (c *Command) AddCronCommand(spec string, cmd *Command, args ...string) {
+func (c *Command) AddCronCommand(spec string, cmd *Command, _ ...string) {
 	root := c.Root()
 	if root.Cron == nil {
 		// 创建一个自定义选项的时间处理器
@@ -60,7 +60,7 @@ func (c *Command) AddCronCommand(spec string, cmd *Command, args ...string) {
 	cronCmd.SetContainer(root.GetContainer())
 
 	// 增加调用函数
-	root.Cron.AddFunc(spec, func() {
+	_, _ = root.Cron.AddFunc(spec, func() {
 		defer func() {
 			// 如果后续的command出现panic，这里要捕获，因为在 cron 中，匿名函数是开启一个 Goroutine 来执行的，而在 Golang 中，
 			// 每个 Goroutine 都是平等的，任何一个 Goroutine 出现 panic，都会导致整个进程中止

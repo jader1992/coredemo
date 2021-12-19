@@ -7,8 +7,8 @@ import (
 )
 
 func Register(r *gin.Engine) error {
-	// 绑定demoPrivider提供者
-	// r.Bind(&demoService.DemoProvider{})
+	// 绑定demoProvider提供者
+	// r.Bind(&demoService.TestProvider{})
 
 	// 注册路由
 	api := NewDemoApi()
@@ -18,15 +18,15 @@ func Register(r *gin.Engine) error {
 	return nil
 }
 
-// DemoApi 测试api的提供者
-type DemoApi struct {
+// Api 测试api的提供者
+type Api struct {
 	service *Service // 嵌套了与user方法的service
 }
 
 // NewDemoApi 初始化DemoApi
-func NewDemoApi() *DemoApi {
+func NewDemoApi() *Api {
 	service := NewService()
-	return &DemoApi{service: service}
+	return &Api{service: service}
 }
 
 // Demo godoc
@@ -36,7 +36,7 @@ func NewDemoApi() *DemoApi {
 // @Tags demo
 // @Success 200 array []UserDTO
 // @Router /demo/demo [get]
-func (api *DemoApi) Demo(c *gin.Context) {
+func (api *Api) Demo(c *gin.Context) {
 	//appService := c.MustMake(contract.AppKey).(contract.App) // 获取app服务提供者
 	//baseFolder := appService.BaseFolder() 	// 获取项目基础目录
 	//users := api.service.GetUsers()
@@ -61,32 +61,32 @@ func (api *DemoApi) Demo(c *gin.Context) {
 		"trace": traceContextMap,
 	})
 
-	c.JSON(200, password + "ceshi")
+	c.JSON(200, password + "test")
 }
 
-// Demo godoc
+// Demo2 godoc
 // @Summary 获取所有学生
 // @Description 获取所有学生
 // @Produce  json
 // @Tags demo
 // @Success 200 array []UserDTO
 // @Router /demo/demo2 [get]
-func (api *DemoApi) Demo2(c *gin.Context) {
+func (api *Api) Demo2(c *gin.Context) {
 	// 获取demo服务的提供者
-	demoProvide := c.MustMake(demoService.DEMO_KEY).(demoService.IService)
+	demoProvide := c.MustMake(demoService.DKey).(demoService.IService)
 	students := demoProvide.GetAllStudent()
 	usersDto := StudentsToUsersDTOs(students)
 	c.JSON(200, usersDto)
 }
 
-func (api *DemoApi) DemoPost(c *gin.Context) {
+func (api *Api) DemoPost(c *gin.Context) {
 	type Foo struct {
 		Name string
 	}
 	foo := &Foo{}
 	err := c.BindJSON(&foo)
 	if err != nil {
-		c.AbortWithError(500, err)
+		_ = c.AbortWithError(500, err)
 	}
 	c.JSON(200, nil)
 }

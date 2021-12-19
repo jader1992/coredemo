@@ -41,7 +41,7 @@ func (c *Command) AddDistributedCronCommand(serviceName string, spec string, cmd
 	cronCmd.SetParentNull()
 
 	// cron增加匿名函数
-	root.Cron.AddFunc(spec, func() {
+	_, _ = root.Cron.AddFunc(spec, func() {
 		// 防止panic
 		defer func() {
 			if err := recover(); err != nil {

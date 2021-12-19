@@ -19,5 +19,5 @@ func Routes(r *gin.Engine) {
 	r.Use(middleware.Trace())
 	// 使用cors中间件
 	r.Use(cors.Default())
-	demo.Register(r) // 注册路由
+	_ = demo.Register(r) // 注册路由
 }
