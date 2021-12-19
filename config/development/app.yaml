@@ -1,5 +1,7 @@
 swagger: true
 
+close_wait: 5
+
 path:
 #  log_folder: "/Users/jade/Desktop/go/gocore/storage/log/"
 #  runtime_folder: "Users/jade/Desktop/go/gocore/storage/runtime/"

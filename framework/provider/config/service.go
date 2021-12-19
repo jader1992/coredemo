@@ -68,7 +68,7 @@ func (conf *GocoreConfig) GetTime(key string) time.Time {
 	return cast.ToTime(conf.find(key))
 }
 
-// GetString get string typen
+// GetString get string type
 func (conf *GocoreConfig) GetString(key string) string {
 	return cast.ToString(conf.find(key))
 }
