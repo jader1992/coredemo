@@ -7,7 +7,7 @@ func (c *Context) MustMakeApp() contract.App {
 	return c.MustMake(contract.AppKey).(contract.App)
 }
 
-// MustMakeKernel 从容器中获取Kernel服务
+// MustKernel 从容器中获取Kernel服务
 func (c *Context) MustKernel() contract.Kernel {
 	return c.MustMake(contract.KernelKey).(contract.Kernel)
 }

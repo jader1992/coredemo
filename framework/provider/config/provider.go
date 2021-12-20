@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 )
 
-type GocoreConfigProvider struct {}
+type GocoreConfigProvider struct{}
 
 func (provider *GocoreConfigProvider) Register(c framework.Container) framework.NewInstance {
 	return NewGocoreConfig
