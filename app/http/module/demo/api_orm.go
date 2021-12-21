@@ -2,7 +2,6 @@ package demo
 
 import (
     "database/sql"
-    "fmt"
     "github.com/jader1992/gocore/framework/contract"
     "github.com/jader1992/gocore/framework/gin"
     "github.com/jader1992/gocore/framework/provider/orm"
@@ -73,8 +72,5 @@ func (api *Api) DemoOrm(c *gin.Context)  {
         "err": err,
     })
 
-    fmt.Println(queryRaw.CreatedAt.Format("2006-01-02 15:04:05"))
-
-    //
     c.JSON(200, "ok")
 }
