@@ -9,6 +9,7 @@ import (
     "github.com/jader1992/gocore/app/provider/demo"
     "github.com/jader1992/gocore/framework"
     "github.com/jader1992/gocore/framework/provider/app"
+    "github.com/jader1992/gocore/framework/provider/cache"
     "github.com/jader1992/gocore/framework/provider/config"
     "github.com/jader1992/gocore/framework/provider/distributed"
     "github.com/jader1992/gocore/framework/provider/env"
@@ -16,6 +17,7 @@ import (
     "github.com/jader1992/gocore/framework/provider/kernel"
     "github.com/jader1992/gocore/framework/provider/log"
     "github.com/jader1992/gocore/framework/provider/orm"
+    "github.com/jader1992/gocore/framework/provider/redis"
     "github.com/jader1992/gocore/framework/provider/trace"
 )
 
@@ -34,6 +36,8 @@ func main() {
 	container.Bind(&id.GocoreIDProvider{})                  // id生成器
 	container.Bind(&trace.GocoreTraceProvider{})            // 链路追踪
 	container.Bind(&orm.GormProvider{})                     // gorm
+    container.Bind(&redis.GocoreRedisProvider{})            // redis
+    container.Bind(&cache.GocoreCacheProvider{})            // cache
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(container); err == nil {
