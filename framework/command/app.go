@@ -154,6 +154,7 @@ var appStartCommand = &cobra.Command{
                 return err
             }
 
+            // gspt.SetProcTitle(strings.TrimPrefix(configService.GetString("app.dev.backend.cmd"), "./") + " app ")
             fmt.Println("app serve url", appAddress)
             if err := startAppServe(server, container); err != nil {
                 fmt.Println(err)
@@ -173,6 +174,13 @@ var appRestartCommand = &cobra.Command{
 
         // 获取pid
         serverPidFile := filepath.Join(appService.RuntimeFolder(), "app.pid")
+
+        // 如果app.pid 不存在直接以守护进程方式启动apps
+        if !util.Exists(serverPidFile) {
+            appDaemon = true
+            return appStartCommand.RunE(c, args)
+        }
+
         content, err := ioutil.ReadFile(serverPidFile)
         if err != nil {
             return err

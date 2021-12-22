@@ -1,11 +1,19 @@
-host: 127.0.0.1
-user: gocore
-password: 12345678
-rsa_key:
-timeout: 1000
-remote_path: "/home/jader1992/"
-post_shell:
-  - "./gocore server restart"
-  - "pwd"
-goos: linux
-goarch: amd64
+connections:
+    - ssh.web-01
+    - ssh.web-02
+
+remote_path: "/home/guyi/gocore"
+
+frontend:
+    pre_action:
+        - "pwd"
+    post_action:
+        - "pwd"
+
+backend:
+    goos: linux
+    goarch: amd64
+    pre_action:
+        - "pwd"
+    post_action:
+        - "./gocore serve restart"

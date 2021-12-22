@@ -18,6 +18,7 @@ import (
     "github.com/jader1992/gocore/framework/provider/log"
     "github.com/jader1992/gocore/framework/provider/orm"
     "github.com/jader1992/gocore/framework/provider/redis"
+    "github.com/jader1992/gocore/framework/provider/ssh"
     "github.com/jader1992/gocore/framework/provider/trace"
 )
 
@@ -38,6 +39,7 @@ func main() {
 	container.Bind(&orm.GormProvider{})                     // gorm
     container.Bind(&redis.GocoreRedisProvider{})            // redis
     container.Bind(&cache.GocoreCacheProvider{})            // cache
+    container.Bind(&ssh.GocoreSSHProvider{})                // ssh
 
 	// 将HTTP引擎初始化,并且作为服务提供者绑定到服务容器中
 	if engine, err := http.NewHttpEngine(container); err == nil {
